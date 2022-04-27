@@ -15,14 +15,15 @@ function initialize() {
   scene = new THREE.Scene()
   raycaster = new THREE.Raycaster()
 
-  // camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000)
+  camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000)
+  camera.fov = 20
   // Kamera Isometric
-  var aspect = window.innerWidth / window.innerHeight;
-  var d = 20;
-  camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 0.1, 1000 );
+  // var aspect = window.innerWidth / window.innerHeight;
+  // var d = 20;
+  // camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 0.1, 1000 );
   camera.position.set( 15, 15, 15 ); // all components equal
   camera.lookAt( scene.position ); // or the origin
-  camera.zoom = 2
+  camera.zoom = 0.35
   camera.updateProjectionMatrix();
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -34,7 +35,8 @@ function initialize() {
   
   let orbitControl = new OrbitControls(camera, renderer.domElement)
   // orbitControl.enableRotate = false
-  orbitControl.enablePan = false
+  // orbitControl.enablePan = false
+  // orbitControl.enableZoom = false
   orbitControl.minPolarAngle = 1;
   orbitControl.maxPolarAngle = 1;
 
