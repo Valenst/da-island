@@ -37,8 +37,10 @@ function initialize() {
   // orbitControl.enableRotate = false
   // orbitControl.enablePan = false
   // orbitControl.enableZoom = false
-  orbitControl.minPolarAngle = 1;
-  orbitControl.maxPolarAngle = 1;
+
+  //Sets max and min PolarAngle to current PolarAngle to remove snapping camera when using OrbitControls
+  orbitControl.minPolarAngle = orbitControl.getPolarAngle();
+  orbitControl.maxPolarAngle = orbitControl.getPolarAngle();
 
   // Create stuff
   // Untuk assign image texture
