@@ -48,7 +48,7 @@ function initialize() {
   const tx_grass = textureLoader.load("./textures/grass.png", function (texture) {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping
     texture.offset.set( 0, 0 )
-    texture.repeat.set( 5, 5 )
+    texture.repeat.set( 1, 1 )
   })
   const tx_dirt = textureLoader.load("./textures/dirt.png")
   const tx_stone = textureLoader.load("./textures/stone.png")
@@ -85,7 +85,7 @@ function initialize() {
   ]
 
   const seg = 1
-  const ge_box = new THREE.BoxGeometry(20, 1, 15, seg, seg, seg)
+  const ge_box = new THREE.BoxGeometry(2, 2, 2, seg, seg, seg)
 
   cube = new THREE.Mesh(
     ge_box,
@@ -94,10 +94,10 @@ function initialize() {
   scene.add(cube)
 
   // Bikin outline
-  const edges = new THREE.EdgesGeometry( ge_box );
-  const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0x112233 }) );
-  scene.add( line );
-    
+  // const edges = new THREE.EdgesGeometry( ge_box );
+  // const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0xffffff }) );
+  // scene.add( line );
+  
   // Light
   // light = new THREE.PointLight(0xFFFFFF, 1.5)
   light = new THREE.AmbientLight(0xFFFFFF)
@@ -107,7 +107,7 @@ function initialize() {
 }
 
 
-
+let line, selected_cube;
 function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
@@ -117,13 +117,23 @@ function animate() {
   const intersects = raycaster.intersectObject(cube)
   raycaster.setFromCamera(mouse, camera)
   if (intersects.length > 0) {
-    // console.log("intersect")
-      // let Offset = new THREE.Vector3(0,0,2)
-      let cameraPosition = new THREE.Vector3().copy(camera.position) 
-      let Offset = (cameraPosition.sub(intersects[0].point)).multiplyScalar(0.1)
-      
-      let newPosition = new THREE.Vector3().addVectors(intersects[0].point,Offset)
-      light.position.copy(newPosition)
+    selected_cube = intersects[0].object.geometry
+
+
+    // const edges = new THREE.EdgesGeometry( selected_cube );
+    // line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0xffffff }) );
+    let points = [];
+    points.push( new THREE.Vector3(-50, 0, 0 ) );
+    points.push( new THREE.Vector3( 50, 0, 0 ) );
+    const line = new MeshLine();
+    line.setVertices(points);
+    const material = new MeshLineMaterial();
+
+    const mesh = new THREE.Mesh( line, material );
+    scene.add(mesh);
+  }
+  else {
+    scene.remove(line)
   }
 }
 
